@@ -7,7 +7,6 @@ public partial class User
     private string Email { get; set; }
     private string Password { get; set; }
     private DateTime CreatedAt { get; set; }
-    private DateTime? LastLoginAt { get; set; }
 
     private User(string name, string email, string password)
     {
@@ -25,6 +24,13 @@ public partial class User
             {
                 var user = new User(name, email, password);
                 database?.AddUser(user);
+
+                const string usersFile = "users.txt";
+                var allLines = File.ReadAllLines(usersFile);
+                if (Array.FindIndex(allLines, line => line.Contains(email)) != -1) return user;
+                var toWrite = $"{user.Name},{user.Email},{user.Password},{user.CreatedAt}";
+                File.AppendAllText(usersFile, toWrite + "\n");
+
                 return user;
             }
         }
@@ -70,17 +76,21 @@ public partial class User
     
     public void UpdateLastLogin()
     {
-        LastLoginAt = DateTime.Now;
+        
     }
     
     public void ChangeName(string newName)
     {
         try
         {
-            if (ValidateName(newName))
-            {
-                Name = newName;
-            }
+            if (!ValidateName(newName)) return;
+            const string usersFile = "users.txt";
+            var lines = File.ReadAllLines(usersFile);
+            var userIndex = Array.FindIndex(lines, line => line.Contains(Name));
+            if (userIndex == -1) return;
+            Name = newName;
+            lines[userIndex] = $"{Name},{Email},{Password},{CreatedAt}";
+            File.WriteAllLines(usersFile, lines);
         } catch (ArgumentException e)
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -93,10 +103,14 @@ public partial class User
     {
         try
         {
-            if (ValidateEmail(newEmail))
-            {
-                Email = newEmail;
-            }
+            if (!ValidateEmail(newEmail)) return;
+            const string usersFile = "users.txt";
+            var lines = File.ReadAllLines(usersFile);
+            var userIndex = Array.FindIndex(lines, line => line.Contains(Email));
+            if (userIndex == -1) return;
+            Email = newEmail;
+            lines[userIndex] = $"{Name},{Email},{Password},{CreatedAt}";
+            File.WriteAllLines(usersFile, lines);
         } catch (ArgumentException e)
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -109,10 +123,14 @@ public partial class User
     {
         try
         {
-            if (ValidatePassword(newPassword))
-            {
-                Password = newPassword;
-            }
+            if (!ValidatePassword(newPassword)) return;
+            const string usersFile = "users.txt";
+            var lines = File.ReadAllLines(usersFile);
+            var userIndex = Array.FindIndex(lines, line => line.Contains(Password));
+            if (userIndex == -1) return;
+            Password = newPassword;
+            lines[userIndex] = $"{Name},{Email},{Password},{CreatedAt}";
+            File.WriteAllLines(usersFile, lines);
         } catch (ArgumentException e)
         {
             Console.ForegroundColor = ConsoleColor.Red;
