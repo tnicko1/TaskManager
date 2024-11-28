@@ -83,4 +83,14 @@ public class IssueDatabase
         issue.ChangeStatus(newStatus);
         return true;
     }
+    
+    public List<Issue> GetIssuesByPriority(Priority priority)
+    {
+        return _issues.Where(i => i.GetPriority() == priority).ToList();
+    }
+    
+    public List<Issue> GetIssuesByDueDate(DateTime? due)
+    {
+        return _issues.Where(i => i.GetDue() == due).ToList();
+    }
 }
