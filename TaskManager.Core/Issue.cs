@@ -9,8 +9,9 @@ public class Issue {
     private DateTime? Due { get; set; }
     private DateTime? FinishedAt { get; set; }
     private Status Status { get; set; }
+    private int Id{ get; set; }
 
-    private Issue(string title, Priority priority, string description = "", User? assignee = null, DateTime? due = null)
+    private Issue(string title, Priority priority,int id, string description = "", User? assignee = null, DateTime? due = null)
     {
         Title = title;
         Priority = priority;
@@ -20,6 +21,7 @@ public class Issue {
         Status = Status.Todo;
         CreatedAt = DateTime.Now;
         FinishedAt = null;
+        Id = id;
     }
     
     public static Issue? CreateIssue(string title, Priority priority, IssueDatabase database, string description = "", User? assignee = null, DateTime? due = null)
@@ -28,7 +30,16 @@ public class Issue {
         {
             if (ValidateTitle(title) && ValidateDescription(description) && ValidateDueDate(due))
             {
-                var issue = new Issue(title, priority, description, assignee, due);
+                var id = new Random().Next(1, 1000);
+                while (true)
+                {
+                    if (!IdExists(id, database))
+                    {
+                        break;
+                    }
+                    id = new Random().Next(1, 1000);
+                }
+                var issue = new Issue(title, priority,id ,description, assignee, due);
                 database.AddIssue(issue);
                 return issue;
             }
@@ -41,6 +52,11 @@ public class Issue {
         }
 
         return null;
+    }
+    
+    private static bool IdExists(int id, IssueDatabase database)
+    {
+        return database.GetAllIssues().Any(i => i.Id == id);
     }
     
     private static bool ValidateTitle(string title)
@@ -142,6 +158,11 @@ public class Issue {
     public string GetDescription()
     {
         return Description;
+    }
+
+    public int GetId()
+    {
+        return Id;
     }
     
     public User? GetAssignee()
