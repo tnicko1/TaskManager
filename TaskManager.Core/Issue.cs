@@ -1,7 +1,6 @@
 ﻿namespace TaskManager.Core;
 
-public class Issue
-{
+public class Issue {
     private string Title { get; set; }
     private string Description { get; set; }
     private User? Assignee { get; set; }
@@ -89,7 +88,7 @@ public class Issue
         Priority = newPriority;
     }
     
-    public void ChangeAssignee(User newAssignee)
+    public void ChangeAssignee(User? newAssignee)
     {
         Assignee = newAssignee;
     }
@@ -132,6 +131,7 @@ public class Issue
         Console.WriteLine(Due != null ? $"Due: {Due}" : "Due: No due date.");
         Console.WriteLine(FinishedAt != null ? $"Finished At: {FinishedAt}" : "Finished At: Not finished yet.");
         Console.WriteLine($"Status: {Status}");
+        Console.WriteLine("\n");
     }
     
     public string GetTitle()
