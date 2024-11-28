@@ -4,27 +4,25 @@ internal static class Program
 {
     public static void Main(string[] args)
     {
-        // Possible use case at the moment
-        
-        var userDatabase = new UserDatabase();
         var issueDatabase = new IssueDatabase();
+        var userDatabase = new UserDatabase();
 
-        const string usersFile = "users.txt";
-        var allLines = File.ReadAllLines(usersFile);
-        foreach (var line in allLines)
-        {
-            var parts = line.Split(',');
-            var name = parts[0];
-            var email = parts[1];
-            var password = parts[2];
-            var createdAt = DateTime.Parse(parts[3]);
-            User.CreateUser(name, email, password, userDatabase);
-        }
+        var user1 = User.CreateUser("Nikoloz Taturashvili", "tnicko@proton.me", "12345678", userDatabase);
+        var user2 = User.CreateUser("Nikoloz Chachua", "nika2006@gmail.com", "12345678", userDatabase);
+        
+        var issue1 = Issue.CreateIssue("Make Task Manager", Priority.High, issueDatabase);
+        
+        issue1?.ChangeAssignee(user1);
+        
+        var issue2 = Issue.CreateIssue("Issue class for Task Manager", Priority.Medium, issueDatabase, "Create Issue class for Task Manager project.", user2);
 
-        var users = userDatabase.GetAllUsers();
-        foreach (var user in users)
+        issue2?.ChangeStatus(Status.InProgress);
+        
+        issue1?.ChangeStatus(Status.InProgress);
+        
+        foreach (var issue in issueDatabase.GetAllIssues())
         {
-            Console.WriteLine(user.GetName());
-        }
+            issue.Print();
+        } 
     }
 }
