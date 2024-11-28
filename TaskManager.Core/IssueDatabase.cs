@@ -26,6 +26,11 @@ public class IssueDatabase
             i.GetTitle().Equals(title, StringComparison.OrdinalIgnoreCase));
     }
     
+    public Issue? GetIssueById(int id)
+    {
+        return _issues.FirstOrDefault(i => i.GetId() == id);
+    }
+    
     public List<Issue> GetAllIssues()
     {
         return _issues;
