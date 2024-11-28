@@ -55,7 +55,7 @@ public class IssueDatabase
         return true;
     }
 
-    public bool UpdateIssueAssignee(string title, User newAssignee)
+    public bool UpdateIssueAssignee(string title, User? newAssignee)
     {
         var issue = GetIssueByTitle(title);
         if (issue == null) return false;
