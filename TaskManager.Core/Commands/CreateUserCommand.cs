@@ -22,10 +22,6 @@ public partial class CreateUserCommand(string name, string email, string passwor
             CreatedAt = DateTime.Now,
             Id = Guid.NewGuid()
         };
-        if (user is null)
-        {
-            throw new UserNullException();
-        }
     }
 
     private void Validate()
@@ -48,6 +44,11 @@ public partial class CreateUserCommand(string name, string email, string passwor
         if (Password.Length is < 8 or > 16)
         {
             throw new ArgumentException("Password must be between 8 and 16 characters.");
+        }
+        
+        if (User.Database?.GetUserByEmail(Email) != null)
+        {
+            throw new ArgumentException("A user with this email already exists.");
         }
     }
 
