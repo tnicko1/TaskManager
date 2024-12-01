@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "Title": "Test Task",
+    "Description": "This task is just for testing, you can delete it safely",
+    "Assignee": {
+      "Name": "Nikoloz Taturashvili",
+      "Email": "tnicko@proton.me",
+      "Password": "notrealpassword",
+      "CreatedAt": "2024-12-01T05:31:14.0554025+04:00",
+      "Id": "8f7af6bf-247d-4a07-9e98-ecee31ad4426"
+    },
+    "Priority": "Low",
+    "CreatedAt": "2024-12-01T06:08:33.803561+04:00",
+    "Due": "2024-12-08T06:08:33.8015897+04:00",
+    "FinishedAt": null,
+    "Status": "Todo",
+    "Id": "48489196-5bae-4cf7-b158-1ffd215b7f91"
+  }
+]
